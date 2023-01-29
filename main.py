@@ -12,12 +12,19 @@ from flask_login import login_user, logout_user, login_required
 from markupsafe import escape
 
 
-port_number = 5000
+# Replace <username> and <password> with the actual username and password for your MongoDB Atlas cluster
+uri = "mongodb+srv://wiremarrow:admin@cluster0.32wtvyh.mongodb.net/?retryWrites=true&w=majority"
 
-client = MongoClient('mongodb+srv://wiremarrow:admin@cluster0.32wtvyh.mongodb.net/?retryWrites=true&w=majority')
+# Create a MongoClient using the uri
+client = MongoClient(uri)
 
-database = client['Cardio']
-print(database)
+# Get a reference to the "test" database
+db = client["users"]
+
+# Get a reference to the "mycollection" collection
+pat_table = db["patients"]
+phys_table = db["physicians"]
+
 
 db = Database()
 
@@ -35,11 +42,14 @@ def load_user(username):
     for pat in db.get_patient_list():
         if pat.get_username() == username:
             return pat
+    for phys in db.get_physician_list():
+        if phys.get_username() == username:
+            return phys
     return None
 
 @app.route('/')
 def index():
-    print(db.get_patient_list, db.get_physician_list)
+    print(db.get_patient_list(), db.get_physician_list())
     return 'This is the index page'
 
 # @app.route('/')
@@ -70,10 +80,13 @@ def register():
     if form.is_submitted():
         username = form.username.data
         password = form.password.data
-        # email = form.email.data
+        email = form.email.data
         # accept_tos = form.accept_tos.data
         pat = Patient(username, password)
         db.add_to_patient_list(pat)
+        print(db.get_patient_list())
+
+        pat_table.insert_one({"f_name": None, "l_name": None, "username": username, "password": password, "email": email, "age": None, "height": None, "weight": None, "gender": None, "sys_bp": None, "dia_bp": None, "chol": None, "glucose": None, "is_smoker": None, "is_drinker": None, "is_active": None})
 
         flash('Registered successfully.')
 
@@ -83,16 +96,19 @@ def register():
     return render_template('./register/register.html', form=form)
 
 @app.route('/phys-register', methods=['GET', 'POST'])
-def register():
+def phys_register():
     form = PhysicianRegistrationForm()
 
     if form.is_submitted():
         username = form.username.data
         password = form.password.data
-        # email = form.email.data
+        email = form.email.data
         # accept_tos = form.tos.data
         phys = Physician(username, password)
         db.add_to_physician_list(phys)
+        print(db.get_physician_list())
+
+        phys_table.insert_one({"f_name": None, "l_name": None, "username": username, "password": password, "email": email, "age": None, "height": None, "weight": None, "gender": None, "sys_bp": None, "dia_bp": None, "chol": None, "glucose": None, "is_smoker": None, "is_drinker": None, "is_active": None})
 
         flash('Registered successfully.')
 
@@ -112,14 +128,18 @@ def login():
         username = form.username.data
         password = form.password.data
 
-        if username in db.get_patient_list:
-            pat = Patient(username, password)
-            login_user(pat)
-            flash('Logged in successfully.')
-        elif username in db.get_physician_list:
-            phys = Physician(username, password)
-            login_user(phys)
-            flash('Logged in successfully.')
+        if username in [x.username for x in db.get_patient_list()]:
+            real_password = db.get_patient_list()[[x.get_username() for x in db.get_patient_list()].index(username)].get_password()
+            if real_password == password:
+                pat = Patient(username, password)
+                login_user(pat)
+                flash('Logged in successfully.')
+        elif username in [x.username for x in db.get_physician_list()]:
+            real_password = db.get_physician_list()[[x.get_username() for x in db.get_physician_list()].index(username)].get_password()
+            if real_password == password:
+                phys = Physician(username, password)
+                login_user(phys)
+                flash('Logged in successfully.')
         else:
             return render_template('./login/login.html', form=form)
 
