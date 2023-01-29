@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,4 +15,127 @@
         </main>
 	    <script src="phys-portal.js"></script>
     </body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="path/to/jquery-3.6.0.min.js"></script>
+    <title>Physician Home Page</title>
+    <link href="{{url_for('static', filename='phys-portal.css')}}" rel="stylesheet" type="text/css">
+    <div id="logo"> 
+        <img src="{{url_for('static', filename='images/logo.png')}}"; width = "200"; height = "200";> 
+    </div> 
+
+    <style>
+        body {
+            font-family: 'custom_font', serif;
+            background-color: #dcefdc;
+        }
+        /* Add some styling for the sidebar */
+        .sidebar {
+          height: 100%;
+          width: 200px;
+          position: fixed;
+          z-index: -1;
+          top: 0;
+          left: 0;
+          background-color: #F24209;
+          overflow-x: hidden;
+        }
+        
+        /* Style the buttons in the sidebar */
+        .sidebar a {
+          color: white;
+          padding: 16px;
+          text-decoration: none;
+          display: block;
+        }
+        
+        /* Change color on hover */
+        .sidebar a:hover {
+          background-color: #ddd;
+          color: black;
+        }
+        
+        /* Style the main content */
+        .main {
+          margin-left: 1500px;
+          padding: 1px 16px;
+        }
+
+        .sidebar .bottom-button {
+            position: absolute;
+            bottom: 0;
+            width: 200px; /* sidebar width */
+        }
+
+        h2 {
+          font-size: 36px;
+          margin-top: 50px;
+        }
+        table {
+          margin-top: 20px;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        th {
+          background-color: #ddd;
+          font-size: 18px;
+          padding: 8px;
+          text-align: center;
+        }
+        td {
+          background-color: #fff;
+          font-size: 14px;
+          padding: 8px;
+          text-align: center;
+        }
+        /* Style the form */
+        .event-form {
+          margin-top: 20px;
+          margin-left: 100px;
+          display: flex;
+          align-items: center;
+        }
+        .event-form label {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+        .event-form input[type="text"] {
+          font-size: 18px;
+          padding: 10px;
+          width: 80%;
+          margin-bottom: 20px;
+          margin-left: 30px;
+        }
+        .event-form input[type="submit"] {
+          font-size: 20px;
+          padding: 10px 20px;
+          background-color: #ddd;
+          border: none;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <style>
+        hr {
+            width: 104%;
+        }
+    </style>
+    <div style = "position:relative; left:220px; top:-210px;">
+        <h1>
+            Welcome Back!
+        </h1>
+        <hr>
+    </div>
+    <div class="sidebar">
+        <a>Patient Data</a>
+        <a href="physician_info.html">Notes</a>
+        <a>Calender</a>
+        <a class="bottom-button">Log Out</a>
+    </div>
+</body>
 </html>

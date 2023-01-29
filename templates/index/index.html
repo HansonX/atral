@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Index Page</title>
-        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}" type="text/css">
         <link rel="icon" href="./favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -13,5 +14,28 @@
             <h1>Welcome to the Index Page</h1>
         </main>
 	    <script src="index.js"></script>
+    </body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Landing Page</title>
+        <link href="{{url_for('static', filename='index.css')}}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+      <div class="App">
+          <header class="App-header">
+            <div class="button-container">
+              <img class="header-img" src="{{url_for('static', filename='images/logo.png')}}" alt="header-img" />
+              <a href="{{ url_for('register', filename='register.html')}}" class = "logButtonleft" type="button">Patient Registration</a>
+              <a href="{{ url_for('phys_register', filename='phys-register.html')}}" class = "logButtonright" type="button">Physician Registration</a>
+            </div>
+            <div class="top-right-corner">
+              <a href="{{ url_for('login', filename='login.html')}}" class="top-right-button" type="button" >Log In</a>
+            </div>
+          </header>
+        </div>
     </body>
 </html>

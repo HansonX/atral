@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -35,6 +36,45 @@
                 </p>
                 <p>
                     {{form.submit()}}
+                </p>
+            </form>
+        </main>
+	    <script src="phys-register.js"></script>
+    </body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Physician Registration Page</title>
+        <link href="{{url_for('static', filename='registerPhys.css')}}" rel="stylesheet" type="text/css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <main>
+            <h1>Welcome to Physician Registration</h1>
+            <form action="" method="post" class="form-center">
+                <p>
+                    {{form.username.label(class='title')}} <br> {{form.username(size=30, class='flaskInput')}}
+                </p>
+                <p>
+                    {{form.email.label(class='title')}} <br> {{form.email(size=30, class='flaskInput')}}
+                </p>
+                <p>
+                    {{form.password.label(class='title')}} <br> {{form.password(size=30, class='flaskInput')}}
+                </p>
+                <p>
+                    {{form.confirm_password.label(class='title')}} <br> {{form.confirm_password(size=30, class='flaskInput')}}
+                </p>
+                <p>
+                    {{form.accept_tos.label(id='tos')}} <br> {{form.accept_tos(size=30)}}
+                </p>
+                <p>
+                    {{form.submit(id='submit')}}
                 </p>
             </form>
         </main>

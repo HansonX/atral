@@ -8,7 +8,7 @@ from flask_login import LoginManager
 from flask_login import login_user, logout_user, login_required
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = 'amble'
 
 login_manager = LoginManager()
