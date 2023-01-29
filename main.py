@@ -25,10 +25,14 @@ login_manager.init_app(app)
 def load_user(username):
     for pat in db.get_patient_list():
         if pat["username"] == username:
-            return pat
+            password = pat["password"]
+            out_pat = Patient(username, password)
+            return out_pat
     for phys in db.get_physician_list():
         if phys["username"] == username:
-            return phys
+            password = phys["password"]
+            out_phys = Physician(username, password)
+            return out_phys
     return None
 
 @app.route('/')
@@ -115,12 +119,14 @@ def login():
                 pat = Patient(username, password)
                 login_user(pat)
                 flash('Logged in successfully.')
+                return render_template('./portal/portal.html')
         elif username in [x["username"] for x in db.get_physician_list()]:
             real_password = db.get_physician_list()[[x["username"] for x in db.get_physician_list()].index(username)]["password"]
             if real_password == password:
                 phys = Physician(username, password)
                 login_user(phys)
                 flash('Logged in successfully.')
+                return render_template('./phys-portal/phys-portal.html')
         else:
             return render_template('./login/login.html', form=form)
 
