@@ -1,0 +1,108 @@
+.App {
+    text-align: center;
+  }
+  
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+  
+  
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  background-color: #dcefdc;
+  margin: 0px;
+}
+  
+.top-right-button {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 140px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(3, 3, 3);
+  border-radius: 50px;
+  font-size: medium;
+}
+  
+.top-right-button:hover {
+  background-color: #f2f2f2;
+  color: black;
+  transform: translateY(-10%);
+  transition: all 0.5s ease;
+}
+
+  
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
+.header-img {
+  height: 80vmin;
+  pointer-events: none;
+  position: absolute; /* this makes the image positioned relative to the parent container */
+  top: 35%; /* this centers the image vertically */
+  left: 50%; /* this centers the image horizontally */
+  transform: translate(-50%, -50%);
+  
+}
+  
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+  
+  
+.logButtonleft {
+  width: 180px;
+  padding: 10px;
+  margin-right: -100px;
+  background-color: rgb(252, 252, 252);
+  color: rgb(5, 5, 5);
+  border-radius: 50px;
+  font-size: medium;
+}
+  
+.logButtonleft:hover {
+  background-color: #f2f2f2;
+  color: black;
+  transform: translateY(-10%);
+  transition: all 0.5s ease;
+}
+    
+.logButtonright {
+  width: 180px;
+  padding: 10px;
+  margin-left: 130px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border-radius: 50px;
+  font-size: medium;
+}
+  
+.logButtonright:hover {
+  background-color: #f2f2f2;
+  color: black;
+  transform: translateY(-10%);
+  transition: all 0.5s ease;
+}
+    
+.headerTitle {
+  color: #000000;
+}
+  
+  
+.App-link {
+  color: #61dafb;
+}
