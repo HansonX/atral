@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Patient Portal Assessment Page</title>
+        <link rel="stylesheet" href="./style.css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <main>
+            <h1>Welcome to the Patient Portal Assessment Page</h1>
+            <form action="" method="post">
+                <p>
+                    {{form.username.label}} <br> {{form.username(size=30)}}
+                </p>
+                <p>
+                    {{form.age.label}} <br> {{form.age(size=30)}}
+                </p>
+                <p>
+                    {{form.height.label}} <br> {{form.height(size=30)}}
+                </p>
+                <p>
+                    {{form.weight.label}} <br> {{form.weight(size=30)}}
+                </p>
+                <p>
+                    {{form.gender.label}} <br> {{form.gender(size=30)}}
+                </p>
+                <p>
+                    {{form.is_smoker.label}} <br> {{form.is_smoker(size=30)}}
+                </p>
+                <p>
+                    {{form.is_drinker.label}} <br> {{form.is_drinker(size=30)}}
+                </p>
+                <p>
+                    {{form.is_active.label}} <br> {{form.is_active(size=30)}}
+                </p>
+                <p>
+                    {{form.submit()}}
+                </p>
+            </form>
+        </main>
+	    <script src="portal-assess.js"></script>
+    </body>
+</html>

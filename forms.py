@@ -26,15 +26,16 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', [validators.DataRequired(), validators.Length(min=6, max=35)])
     submit = SubmitField('Log in')
 
-class PatientAssessmentForm():
+class PatientAssessmentForm(FlaskForm):
     username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)])
     age = IntegerField('Age', [validators.DataRequired()])
     height = IntegerField('Height', [validators.DataRequired()])
     weight = IntegerField('Weight', [validators.DataRequired()])
-    gender = BooleanField('Gender', [validators.DataRequired()])
-    is_smoker = BooleanField('Smoker status', [validators.DataRequired()])
-    is_drinker = BooleanField('Drinker status', [validators.DataRequired()])
-    is_active = BooleanField('Activity status', [validators.DataRequired()])
+    gender = BooleanField('Gender')
+    is_smoker = BooleanField('Smoker status')
+    is_drinker = BooleanField('Drinker status')
+    is_active = BooleanField('Activity status')
+    submit = SubmitField('Submit assessment')
 
 class PhysicianAssessmentForm(FlaskForm):
     username = StringField('Username', [validators.DataRequired(), validators.Length(min=4, max=25)])

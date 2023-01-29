@@ -140,6 +140,40 @@ def phys_portal():
     return render_template('./phys-portal/phys-portal.html')
 
 
+@app.route('/portal-assess', methods=['GET', 'POST'])
+@login_required
+def portal_assess():
+    form = PatientAssessmentForm()
+
+    if form.is_submitted():
+        username = form.username.data
+        age = form.age.data
+        height = form.height.data
+        weight = form.weight.data
+        gender = form.gender.data
+        is_smoker = form.is_smoker.data
+        is_drinker = form.is_drinker.data
+        is_active = form.is_active.data
+
+        if username in [x["username"] for x in db.get_patient_list()]:
+            f_name = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["f_name"]
+            l_name = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["l_name"]
+            password = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["password"]
+            email = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["email"]
+            sys_bp = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["sys_bp"]
+            dia_bp = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["dia_bp"]
+            chol = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["chol"]
+            glucose = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["glucose"]
+
+            new_query = {"f_name": f_name, "l_name": l_name, "username": username, "password": password, "email": email, "age": age, "height": height, "weight": weight, "gender": gender, "sys_bp": sys_bp, "dia_bp": dia_bp, "chol": chol, "glucose": glucose, "is_smoker": is_smoker, "is_drinker": is_drinker, "is_active": is_active}
+            db.update_patient_record(username, new_query)
+
+            next = request.args.get('next')
+
+            return redirect(next or url_for('portal'))
+    return render_template('./portal-assess/portal-assess.html', form=form)
+
+
 @app.route('/phys-portal-assess', methods=['GET', 'POST'])
 @login_required
 def phys_portal_assess():
