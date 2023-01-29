@@ -1,24 +1,20 @@
 from users import Patient, Physician
 from database import Database
-from forms import PatientRegistrationForm, PhysicianRegistrationForm, LoginForm
-
+from forms import PatientRegistrationForm, PhysicianRegistrationForm, LoginForm, PatientAssessmentForm, PhysicianAssessmentForm
 from flask import Flask
-from flask import request, session
-from flask import flash, redirect, url_for, render_template
+from flask import request
+from flask import redirect, url_for, render_template
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, login_required
-from markupsafe import escape
 
-
-db = Database()
-
-login_manager = LoginManager()
 
 app = Flask(__name__)
-
 app.secret_key = 'amble'
 
+login_manager = LoginManager()
 login_manager.init_app(app)
+
+db = Database()
 
 
 @login_manager.user_loader
@@ -35,78 +31,66 @@ def load_user(username):
             return out_phys
     return None
 
+
 @app.route('/')
 def index():
-    print(db.get_patient_list())
-    print(db.get_physician_list())
-    return 'This is the index page'
+    for pat in [f'Patient: {x}' for x in db.get_patient_list()]:
+        print(pat)
+    for phys in [f'Physician: {x}' for x in db.get_physician_list()]:
+        print(phys)
+    return render_template('./index/index.html')
 
-# @app.route('/')
-# def index():
-#     if 'username' in session:
-#         return f'Logged in as {session["username"]}'
-#     return 'You are not logged in'
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     error = None
-#     if request.method == 'POST':
-#         session['username'] = request.form['username']
-#         return redirect(url_for('index'))
-#     elif request.method == 'GET':
-#         return '''
-#             <form method="post">
-#                 <p><input type=text name=username>
-#                 <p><input type=text name=password>
-#                 <p><input type=submit value=Login>
-#             </form>
-#         '''
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = PatientRegistrationForm()
 
     if form.is_submitted():
+        f_name = form.first_name.data
+        l_name = form.last_name.data
         username = form.username.data
         password = form.password.data
         email = form.email.data
-        # accept_tos = form.accept_tos.data
-        # pat = Patient(username, password)
 
-        db.add_to_patient_list(username=username, password=password, email=email)
+        if username in [x["username"] for x in db.get_patient_list()]:
+            return render_template('./register/register.html', form=form)
+        elif username in [x["username"] for x in db.get_physician_list()]:
+            return render_template('./register/register.html', form=form)
 
-        flash('Registered successfully.')
+        db.add_to_patient_list(f_name=f_name, l_name=l_name, username=username, password=password, email=email)
 
         next = request.args.get('next')
 
         return redirect(next or url_for('login'))
     return render_template('./register/register.html', form=form)
 
+
 @app.route('/phys-register', methods=['GET', 'POST'])
 def phys_register():
     form = PhysicianRegistrationForm()
 
     if form.is_submitted():
+        f_name = form.first_name.data
+        l_name = form.last_name.data
         username = form.username.data
         password = form.password.data
         email = form.email.data
-        # accept_tos = form.tos.data
-        # phys = Physician(username, password)
 
-        db.add_to_physician_list(username=username, password=password, email=email)
+        if username in [x["username"] for x in db.get_physician_list()]:
+            return render_template('./phys-register/phys-register.html', form=form)
+        elif username in [x["username"] for x in db.get_physician_list()]:
+            return render_template('./phys-register/phys-register.html', form=form)
 
-        flash('Registered successfully.')
+        db.add_to_physician_list(f_name=f_name, l_name=l_name, username=username, password=password, email=email)
 
         next = request.args.get('next')
 
         return redirect(next or url_for('login'))
     return render_template('./phys-register/phys-register.html', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # Here we use a class of some kind to represent and validate our
-    # client-side form data. For example, WTForms is a library that will
-    # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
 
     if form.is_submitted():
@@ -118,22 +102,21 @@ def login():
             if real_password == password:
                 pat = Patient(username, password)
                 login_user(pat)
-                flash('Logged in successfully.')
-                return render_template('./portal/portal.html')
+
+                next = request.args.get('next')
+
+                return redirect(next or url_for('portal'))
         elif username in [x["username"] for x in db.get_physician_list()]:
             real_password = db.get_physician_list()[[x["username"] for x in db.get_physician_list()].index(username)]["password"]
             if real_password == password:
                 phys = Physician(username, password)
                 login_user(phys)
-                flash('Logged in successfully.')
-                return render_template('./phys-portal/phys-portal.html')
-        else:
-            return render_template('./login/login.html', form=form)
 
-        next = request.args.get('next')
+                next = request.args.get('next')
 
-        return redirect(next or url_for('index'))
+                return redirect(next or url_for('phys_portal'))
     return render_template('./login/login.html', form=form)
+
 
 @app.route("/logout")
 @login_required
@@ -144,13 +127,48 @@ def logout():
 
     return redirect(next or url_for('index'))
 
-# @app.route('/logout')
-# def logout():
-#     # remove the username from the session if it's there
-#     session.pop('username', None)
-#     return redirect(url_for('index'))
 
-# @app.route('/user/<username>')
-# def patient(username):
-#     # show the patient profile for that user
-#     return f'User {escape(username)}'
+@app.route('/portal', methods=['GET', 'POST'])
+@login_required
+def portal():
+    return render_template('./portal/portal.html')
+
+
+@app.route('/phys-portal', methods=['GET', 'POST'])
+@login_required
+def phys_portal():
+    return render_template('./phys-portal/phys-portal.html')
+
+
+@app.route('/phys-portal-assess', methods=['GET', 'POST'])
+@login_required
+def phys_portal_assess():
+    form = PhysicianAssessmentForm()
+
+    if form.is_submitted():
+        username = form.username.data
+        sys_bp = form.sys_bp.data
+        dia_bp = form.dia_bp.data
+        chol = form.chol.data
+        glucose = form.glucose.data
+                
+        if username in [x["username"] for x in db.get_patient_list()]:
+            f_name = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["f_name"]
+            l_name = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["l_name"]
+            password = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["password"]
+            email = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["email"]
+            age = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["age"]
+            height = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["height"]
+            weight = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["weight"]
+            gender = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["gender"]
+            is_smoker = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["is_smoker"]
+            is_drinker = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["is_drinker"]
+            is_active = db.get_patient_list()[[x["username"] for x in db.get_patient_list()].index(username)]["is_active"]
+
+            new_query = {"f_name": f_name, "l_name": l_name, "username": username, "password": password, "email": email, "age": age, "height": height, "weight": weight, "gender": gender, "sys_bp": sys_bp, "dia_bp": dia_bp, "chol": chol, "glucose": glucose, "is_smoker": is_smoker, "is_drinker": is_drinker, "is_active": is_active}
+            db.update_patient_record(username, new_query)
+
+            next = request.args.get('next')
+
+            return redirect(next or url_for('phys_portal'))
+    return render_template('./phys-portal-assess/phys-portal-assess.html', form=form)

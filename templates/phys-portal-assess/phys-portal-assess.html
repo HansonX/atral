@@ -4,40 +4,34 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Patient Registration Page</title>
+        <title>Physician Portal Assessment Page</title>
         <link rel="stylesheet" href="./style.css">
         <link rel="icon" href="./favicon.ico" type="image/x-icon">
     </head>
     <body>
         <main>
-            <h1>Welcome to the Patient Registration Page</h1>
+            <h1>Welcome to the Physician Portal Assessment Page</h1>
             <form action="" method="post">
-                <p>
-                    {{form.f_name.label}} <br> {{form.f_name(size=30)}}
-                </p>
-                <p>
-                    {{form.l_name.label}} <br> {{form.l_name(size=30)}}
-                </p>
                 <p>
                     {{form.username.label}} <br> {{form.username(size=30)}}
                 </p>
                 <p>
-                    {{form.email.label}} <br> {{form.email(size=30)}}
+                    {{form.sys_bp.label}} <br> {{form.sys_bp(size=30)}}
                 </p>
                 <p>
-                    {{form.password.label}} <br> {{form.password(size=30)}}
+                    {{form.dia_bp.label}} <br> {{form.dia_bp(size=30)}}
                 </p>
                 <p>
-                    {{form.confirm_password.label}} <br> {{form.confirm_password(size=30)}}
+                    {{form.chol.label}} <br> {{form.chol(size=30)}}
                 </p>
                 <p>
-                    {{form.accept_tos.label}} <br> {{form.accept_tos(size=30)}}
+                    {{form.glucose.label}} <br> {{form.glucose(size=30)}}
                 </p>
                 <p>
                     {{form.submit()}}
                 </p>
             </form>
         </main>
-	    <script src="register.js"></script>
+	    <script src="phys-portal-assess.js"></script>
     </body>
 </html>
