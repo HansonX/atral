@@ -57,7 +57,8 @@ def index():
 def register():
     form = RegistrationForm()
 
-    if form.validate_on_submit():
+    if form.is_submitted():
+        print(form.username.data)
         username = form.username.data
         password = form.password.data
         # accept_tos = form.tos.data
@@ -78,14 +79,14 @@ def login():
     # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
 
-    if form.validate_on_submit():
+    if form.is_submitted():
         username = form.username.data
         password = form.password.data
-        user = User(username, password)
+        pat = Patient(username, password)
 
         # Login and validate the user.
         # user should be an instance of your `User` class
-        login_user(user)
+        login_user(pat)
 
         flash('Logged in successfully.')
 

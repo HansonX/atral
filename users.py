@@ -6,6 +6,9 @@ class User:
         self.active = True
         self.anonymous = False
 
+    def get_id(self):
+        return self.username
+
     def get_username(self):
         return self.username
 
@@ -37,9 +40,9 @@ class User:
         self.anonymous = x
 
 class Patient(User):
-    def __init__(self):
-        pass
+    def __init__(self, un, pw):
+        User.__init__(self, un, pw)
 
 class Physician(User):
-    def __init__(self):
-        pass
+    def __init__(self, un, pw):
+        User.__init__(self, un, pw)
